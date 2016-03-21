@@ -26,7 +26,7 @@ class RL4A_reader{
             $this->CHECKER_2 = array (
                 "001",
                 "058.9",
-                "I31",
+                "131",
                 "298",
             );
         }
@@ -66,7 +66,7 @@ class RL4A_reader{
             
             for($i=$startRow; $i<=$endRow; $i++) {
                 for($j=69; $j<=90; $j++) {
-                    $this->CI->m_u_RL4->inputRL4A($tahun, $noreg, $startID, chr($j), $sheetData[$i][chr($j)] );
+                    $this->CI->m_u_rl4->inputRL4A($tahun, $noreg, $startID, ($j-68), $sheetData[$i][chr($j)] );
                 }
                 $startID++;
             }
@@ -86,7 +86,7 @@ class RL4A_reader{
             
             for($i=$startRow; $i<=$endRow; $i++) {
                 for($j=69; $j<=90; $j++) {
-                    $this->CI->m_u_RL4->inputRL4A($tahun, $noreg, $startID, chr($j), $sheetData[$i][chr($j)] );
+                    $this->CI->m_u_rl4->inputRL4A($tahun, $noreg, $startID, ($j-68), $sheetData[$i][chr($j)] );
                 }
                 $startID++;
             }

@@ -66,7 +66,7 @@ class RL4B_reader{
             
             for($i=$startRow; $i<=$endRow; $i++) {
                 for($j=69; $j<=90; $j++) {
-                    $this->CI->m_u_RL4->inputRL4B($tahun, $noreg, $startID, $j, $sheetData[$i][chr($j)] );
+                    $this->CI->m_u_rl4->inputRL4B($tahun, $noreg, $startID, ($j-68), $sheetData[$i][chr($j)] );
                 }
                 $startID++;
             }
@@ -85,7 +85,7 @@ class RL4B_reader{
             
             for($i=$startRow; $i<=$endRow; $i++) {
                 for($j=69; $j<=69; $j++) {
-                    $this->CI->m_u_RL4->inputRL4B($tahun, $noreg, $startID, $j, $sheetData[$i][chr($j)] );
+                    $this->CI->m_u_rl4->inputRL4B($tahun, $noreg, $startID, ($j-68), $sheetData[$i][chr($j)] );
                 }
                 $startID++;
             }

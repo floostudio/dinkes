@@ -21,8 +21,21 @@ class m_u_rl4 extends CI_Model {
             'VALUE' => $in_value
         );
 
-        $status = $this->db->insert('RL4A', $data);
-
+        $where = array (
+            'TAHUN_ID' => $in_tahunId,
+            'RS_NOREG' => $in_rsNoreg,
+            'LS_RL4_ID' => $in_listRL4Penyakit,
+            'LS_RL4_PARAM_ID' => $in_listRL4Parameter,
+        );
+        
+        if($this->m_bab->cekData('RL4A', $where))
+        {
+            $this->db->where($where);
+            $status = $this->db->update('RL4A', $data);
+        }
+        else {
+            $status = $this->db->insert('RL4A', $data);
+        }
         return $status;
     }
     function inputRL4B($in_tahunId, $in_rsNoreg, $in_listRL4Penyakit, $in_listRL4Parameter, $in_value) {
@@ -34,9 +47,22 @@ class m_u_rl4 extends CI_Model {
             'LS_RL4_PARAM_ID' => $in_listRL4Parameter,
             'VALUE' => $in_value
         );
-
-        $status = $this->db->insert('RL4B', $data);
-
+        $where = array (
+            'TAHUN_ID' => $in_tahunId,
+            'RS_NOREG' => $in_rsNoreg,
+            'LS_RL4_ID' => $in_listRL4Penyakit,
+            'LS_RL4_PARAM_ID' => $in_listRL4Parameter,
+        );
+        
+        if($this->m_bab->cekData('RL4B', $where))
+        {
+            $this->db->where($where);
+            $status = $this->db->update('RL4B', $data);
+        }
+        else {
+            $status = $this->db->insert('RL4B', $data);
+        }
+        
         return $status;
     }
 	
