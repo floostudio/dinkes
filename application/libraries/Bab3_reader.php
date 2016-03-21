@@ -19,9 +19,9 @@ class Bab3_reader{
             
             $this->CHECKER_1 = array(
                 "Tenaga Medik Dasar",
-                "Tenaga Medik Spesialis Dasar",
+                "Tenaga Medik Sub Spesialis Dasar",
                 "Tenaga Medik Spesialis Lain",
-                "Tenaga Non Medis &Lainnya",
+                "Tenaga Paramedis dan Tenaga Kesehatan Lain",
                 "Total Keseluruhan"
             );
             
@@ -36,10 +36,10 @@ class Bab3_reader{
         public function cekSheet1($filePath) {
             $sheetData = $this->readExcel($filePath, 0);
             if(trim($sheetData['6']['B']) != trim($this->CHECKER_1[0])){ return false; }
-            else if(trim($sheetData['9']['B']) !=  trim($this->CHECKER_1[1])){ return false; }
-            else if(trim($sheetData['44']['B']) !=  trim($this->CHECKER_1[2])){ return false; }
-            else if(trim($sheetData['87']['B']) !=  trim($this->CHECKER_1[3])){ return false; }
-            else if(trim($sheetData['91']['B']) !=  trim($this->CHECKER_1[4])){ return false; }
+            else if(trim($sheetData['14']['B']) !=  trim($this->CHECKER_1[1])){ return false; }
+            else if(trim($sheetData['50']['B']) !=  trim($this->CHECKER_1[2])){ return false; }
+            else if(trim($sheetData['72']['B']) !=  trim($this->CHECKER_1[3])){ return false; }
+            else if(trim($sheetData['97']['B']) !=  trim($this->CHECKER_1[4])){ return false; }
             else { return true; }
         }
         
@@ -60,34 +60,69 @@ class Bab3_reader{
         
         public function readBab3_Ketenagaan($filePath, $sheetIndex, $tahun, $noreg) {
             $startRow = 7;
-            $endRow = 90;
+            $endRow = 97;
             $startColumn = 'C';
             $endColumn = 'E';
-            $startID = 1;
-            $skipRow = array(9, 13, 14, 15, 16, 26, 32, 37, 38, 44, 57, 58, 66, 86, 87);
-            $newRow = array(13, 14, 15, 16, 26, 32, 37, 57, 86);
-            $idRow = array(73, 74, 75, 76, 77, 78, 79, 80, 81);
+            
             $this->excel = new ExcelReader();
             $sheetData =  $this->excel->readExcel($filePath, $sheetIndex, $startRow, $endRow, $startColumn, $endColumn);
             
-            for($i=$startRow; $i<=$endRow; $i++)
-            {
-                if($startID==33) { $startID = 35; } // Skip Sub Spesialis Intervensi Dan Sub Spesialis Rehab
-                if(!in_array($i, $skipRow)) {
-                    
-                    $this->CI->m_u_bab3->inputKetenagaan($tahun, $noreg, $startID, 
-                            $sheetData[$i]['C'], $sheetData[$i]['D'], $sheetData[$i]['E'] );
-                    $startID++;
-                }
-            }
-            
-            for($j=0;$j<count($newRow);$j++) {
-                $this->CI->m_u_bab3->inputKetenagaan($tahun, $noreg, $idRow[$j], 
-                            $sheetData[$newRow[$j]]['C'], $sheetData[$newRow[$j]]['D'], $sheetData[$newRow[$j]]['E'] );
-            }
-              
+            // Input A. Tenaga Medik Dasar
+            $this->inputKetenagaan(7, 8, 1, $tahun, $noreg, $sheetData);
+            // Input B. Tenaga Medik Dasar
+            $this->inputKetenagaan(10, 13, 84, $tahun, $noreg, $sheetData);
+            // Input C.1 Dokter Sub Spesialis Bedah 
+            $this->inputKetenagaan(15, 17, 3, $tahun, $noreg, $sheetData);
+            $this->inputKetenagaan(18, 21, 73, $tahun, $noreg, $sheetData);
+            // Input C.2 Dokter Sub Spesialis Penyakit Dalam
+            $this->inputKetenagaan(22, 30, 6, $tahun, $noreg, $sheetData);
+            $this->inputKetenagaan(31, 31, 77, $tahun, $noreg, $sheetData);
+            // Input C.3 Dokter Sub Spesialis Anak
+            $this->inputKetenagaan(32, 36, 15, $tahun, $noreg, $sheetData);
+            $this->inputKetenagaan(37, 37, 78, $tahun, $noreg, $sheetData);
+            // Input C.4 Dokter Sub Spesialis Obgyn 
+            $this->inputKetenagaan(38, 41, 20, $tahun, $noreg, $sheetData);
+            $this->inputKetenagaan(42, 42, 79, $tahun, $noreg, $sheetData);
+            // Input C.5 Dokter Spesialis Lainnya
+            $this->inputKetenagaan(43, 43, 82, $tahun, $noreg, $sheetData);
+            // Input D. Tenaga Spesialis Penunjang Medik
+            $this->inputKetenagaan(45, 49, 24, $tahun, $noreg, $sheetData);
+            // Input E. Tenaga Medik Spesialis Lain
+            $this->inputKetenagaan(51, 54, 29, $tahun, $noreg, $sheetData);
+            $this->inputKetenagaan(55, 62, 35, $tahun, $noreg, $sheetData);
+            $this->inputKetenagaan(63, 63, 80, $tahun, $noreg, $sheetData);
+            // Input F. Tenaga Medik Spesialis Gigi Mulut
+            $this->inputKetenagaan(64, 71, 43, $tahun, $noreg, $sheetData);
+            // Input G. Tenaga Paramedis dan Kesehatan Lain
+            $this->inputKetenagaan(73, 95, 51, $tahun, $noreg, $sheetData);
+            // Input G. Tenaga Non Medis & Lainnya
+            $this->inputKetenagaan(96, 96, 83, $tahun, $noreg, $sheetData);
+             
         }
         
+        function inputKetenagaan($_startRow, $_endRow, $_startID, $_tahun, $_noreg, $_sheetData) {
+            for($i=$_startRow; $i<=$_endRow; $i++) {
+                    $this->CI->m_u_bab3->inputKetenagaan($_tahun, $_noreg, $_startID, 
+                            $_sheetData[$i]['C'], $_sheetData[$i]['D'], $_sheetData[$i]['E'] );
+                    $_startID++;
+            }
+        }
+        
+        
+        /*
+         * LIST PELATIHAN JENIS TENAGA ID   | LIST PELATIHAN URAIAN ID
+         * 
+         *   1	Dokter Spesialis            | 1. PPGD
+         *   2	Dokter Umum                 | 2. ACLS
+         *   3	Dokter Spesialis Anastesi   | 3. ATLS
+         *   4	Dokter Spesialis Obgyn      | 4. GELS
+         *   5	Dokter Spesialis Anak       | 5. Lain-lain
+         *   6	Perawat dan Bidan           | 6. Jumlah Petugas terlatih
+         *   7	Perawat                     | 7. Total Jumlah Petugas (terlatih+tidak)
+         *   8	Perawat Anastesi            | 8. PONEK
+         *   9	Bidan                       | 9. Neonatal Life Support
+         * 
+         */
         public function readBab3_PelatihanSDM($filePath, $sheetIndex, $tahun, $noreg) {
             $startRow = 7;
             $endRow = 60;
@@ -112,20 +147,6 @@ class Bab3_reader{
             
         }
         
-        /*
-         * LIST PELATIHAN JENIS TENAGA ID   | LIST PELATIHAN URAIAN ID
-         * 
-         *   1	Dokter Spesialis            | 1. PPGD
-         *   2	Dokter Umum                 | 2. ACLS
-         *   3	Dokter Spesialis Anastesi   | 3. ATLS
-         *   4	Dokter Spesialis Obgyn      | 4. GELS
-         *   5	Dokter Spesialis Anak       | 5. Lain-lain
-         *   6	Perawat dan Bidan           | 6. Jumlah Petugas terlatih
-         *   7	Perawat                     | 7. Total Jumlah Petugas (terlatih+tidak)
-         *   8	Perawat Anastesi            | 8. PONEK
-         *   9	Bidan                       | 9. Neonatal Life Support
-         * 
-         */
         private function readIGD($sheetData, $tahun, $noreg) {
             // Read IGD
             $IGD = 2;
