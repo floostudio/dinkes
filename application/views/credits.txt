@@ -1,0 +1,33 @@
+ICONS & IMAGES
+-------------------------------------
+http://iconshock.com/
+http://www.woothemes.com/2009/09/woofunction-178-amazing-web-design-icons/
+
+SCRIPTS & PLUGINS
+-------------------------------------
+http://jquery.com/
+http://jqueryui.com/
+http://www.modernizr.com/
+https://github.com/harvesthq/chosen
+https://github.com/michael/multiselect
+https://github.com/mathiasbynens/noSelect-jQuery-Plugin
+http://www.technoreply.com/autogrow-textarea-plugin-version-2-0/
+http://www.position-relative.net/creation/formValidator/
+http://www.plupload.com/
+http://craigsworks.com/projects/qtip2/
+http://code.google.com/p/google-code-prettify/
+http://www.humblesoftware.com/flotr2/
+http://arshaw.com/fullcalendar/
+http://manos.malihu.gr/jquery-thumbnail-scroller
+
+FRAMEWORKS
+-------------------------------------
+http://www.formeeee.org
+http://www.960.gs
+
+LOGO FONT
+-------------------------------------
+http://www.dafont.com/loaded.font
+
+
+
